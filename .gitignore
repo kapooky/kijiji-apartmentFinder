@@ -1,0 +1,4 @@
+.aws-sam/
+**node_modules
+idea/**
+/functions/fetchApartments/tools/config.js
