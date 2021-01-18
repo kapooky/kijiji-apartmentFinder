@@ -1,0 +1,31 @@
+{
+  "Comment": "A state machine that does mock stock trading.",
+  "StartAt": "fetchUniqueAds",
+  "States": {
+    "fetchUniqueAds": {
+      "Type": "Task",
+      "Resource": "${fetchResultsArn}",
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "States.TaskFailed"
+          ],
+          "IntervalSeconds": 15,
+          "MaxAttempts": 1,
+          "BackoffRate": 1.5
+        }
+      ],
+      "Next": "validateAds"
+    },
+    "validateAds": {
+      "Type": "Task",
+      "Resource": "${validateApartmentArn}",
+      "Next": "sendEmail"
+    },
+    "sendEmail": {
+      "Type": "Task",
+      "Resource": "${sendEmailArn}",
+      "End": true
+    }
+  }
+}

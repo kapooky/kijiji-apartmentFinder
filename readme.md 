@@ -1,0 +1,19 @@
+Kijiji Apartment Finder
+
+Personal script that I use to to find apartments on Kijiji. Powered by AWS, namely Step Functions, Lambda, DynamoDB, and SES. Also leverages Googlemaps API and Walkscore API for detailed
+apartment analysis (more on this later)
+
+How this script works:(Note: This is tailored to my use-case)
+The script runs on a scheduled basis(hourly I think?),
+1.On each run, functions/fetch scrapes kijiji for new apartments ad,and then attempts to place each ad into a DynamoDB table.
+If the operation works, then the ad is unique and is passed to the next function.
+2. The next function(validateads?) does the proccessing of the ad. It does pre-liminary checks to ensure that the price is good, comes with all utilities,etc, is within reasonable distance, etc. Afer that is done, The function then does the asyncronous checks. It invokes the walkScore Api to quantify the walking and cycling infrastructure around the apartment's location, Google maps API to determine average commute times to work, and Google's Nearbyplaces API to name all nearby places within a given radius from the apartment.
+3. If the ad has passed the rigerous filtering process, then it's emailed to me.
+
+
+Back story:
+A few weeks back, I was frustrated by my time spent on apartment finding. In my area, affordable apartments are hard to come by, and when they do pop up, they are immediately snatched up. Because of this,
+I often have to devote my entire day checking for new apartments. And when I do find good apartments prices, I need to further filter them down by doing manually intensive research such as checking how close it is to work, the ammenities nearby, how walkable the area is, etc.
+This research also gobbles up my time. Suffice to say, the entire process is one big headache. Hence why I wrote a script to automote it.
+
+
